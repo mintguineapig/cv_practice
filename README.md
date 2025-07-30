@@ -14,7 +14,7 @@
 
 ---
 
-## Installation
+## **Installation**
 ```bash
 # 시스템 요구
 Python 3.8  
@@ -25,32 +25,36 @@ CUDA 12.8
 pip install \
   wandb==0.20.0 \
   pydantic==1.10.2
+```
 
-
-## Docker
-
+## **Docker**
+```bash
 docker run --gpus all -it -h cv_practice_gpu \
   -p 1290:1290 \
   --ipc=host \
   --name cv_practice_gpu \
   -v /m2:/projects \
   nvcr.io/nvidia/pytorch:22.12-py3 bash
+```
 
 
-# Usage
+
+## **Usage**
+```bash
 --dataname {CIFAR10|CIFAR100|TinyImagenet}
 --num-classes {10|100|200}
---model-name <timm 모델 이름 또는 resnet18>
+--model-name <timm model name or resnet18>
 --opt-name {Adam|SGD}
 --aug-name {weak|default|strong}
---batch-size <정수>
---lr <학습률>                # (옵션) 기본값 사용 시 생략 가능
+--batch-size <int>
+--lr <float>             # optional, omit to use default
 --use_scheduler
---epochs <에포크 수>
---img-size <정수>           # 32×32 강제 조정 시 지정
---exp-name <실험 이름>
+--epochs <int>
+--img-size <int>         # specify only if forcing 32×32 input
+--exp-name <experiment name>
+```
 
-##Examples
+## **Examples**
 ### ResNet-18 on CIFAR-10 (default augment)
 python main.py \
   --dataname CIFAR10 \
@@ -131,6 +135,49 @@ python main.py \
   --exp-name 10_naflexvit_default_Adam
 
 ### ResNet-18 on CIFAR-100 (weak augment)
+python main.py \
+  --dataname CIFAR100 \
+  --num-classes 100 \
+  --model-name resnet18 \
+  --opt-name Adam \
+  --aug-name weak \
+  --batch-size 128 \
+  --lr 0.001 \
+  --use_scheduler \
+  --epochs 50 \
+  --exp-name 100_resnet_weak_Adam
 
+### ResNet-18 on TinyImageNet (default augment)
+python main.py \
+  --dataname TinyImagenet \
+  --num-classes 200 \
+  --model-name resnet18 \
+  --opt-name Adam \
+  --aug-name default \
+  --batch-size 128 \
+  --lr 0.001 \
+  --use_scheduler \
+  --epochs 50 \
+  --exp-name 200_resnet18
+
+
+| Exp Name                          | Dataset      | Model           | Input Size | Augment | Batch | Optimizer | Scheduler | Epochs |
+| --------------------------------- | ------------ | --------------- | ---------- | ------- | ----- | --------- | --------- | ------ |
+| `10_resnet18_default_Adam`        | CIFAR-10     | ResNet-18       | 32×32      | default | 64    | Adam      | Yes       | 50     |
+| `10_resnet18_weak_Adam`           | CIFAR-10     | ResNet-18       | 32×32      | weak    | 64    | Adam      | Yes       | 50     |
+| `10_resnet18_strong_Adam`         | CIFAR-10     | ResNet-18       | 32×32      | strong  | 64    | Adam      | Yes       | 50     |
+| `10_efficientnet_b0_default_Adam` | CIFAR-10     | EfficientNet-B0 | 32×32\*    | default | 64    | Adam      | Yes       | 50     |
+| `10_efficientnet_b0_default_SGD`  | CIFAR-10     | EfficientNet-B0 | 32×32\*    | default | 64    | SGD       | Yes       | 50     |
+| `10_efficientnet_b0_weak_Adam`    | CIFAR-10     | EfficientNet-B0 | 32×32\*    | weak    | 64    | Adam      | Yes       | 50     |
+| `10_ViTsmall32x32_default_Adam`   | CIFAR-10     | ViT-Small       | 32×32      | default | 128   | Adam      | Yes       | 50     |
+| `10_ViTsmall32x32_weak_Adam`      | CIFAR-10     | ViT-Small       | 32×32      | weak    | 128   | Adam      | Yes       | 50     |
+| `10_ConvNeXt_default_Adam`        | CIFAR-10     | ConvNeXt-Base   | 32×32\*    | default | 128   | Adam      | Yes       | 50     |
+| `10_ConvNeXt_weak_Adam`           | CIFAR-10     | ConvNeXt-Base   | 32×32\*    | weak    | 128   | Adam      | Yes       | 50     |
+| `10_naflexvit_weak_Adam`          | CIFAR-10     | naflexvit\_base | 224×224    | weak    | 64    | Adam      | Yes       | 50     |
+| `10_naflexvit_default_Adam`       | CIFAR-10     | naflexvit\_base | 224×224    | default | 64    | Adam      | Yes       | 50     |
+| `100_resnet_weak_Adam`            | CIFAR-100    | ResNet-18       | 32×32      | weak    | 128   | Adam      | Yes       | 50     |
+| `200_resnet18`                    | TinyImageNet | ResNet-18       | 224×224    | default | 128   | Adam      | Yes       | 50     |
+
+* CIFAR inputs (32×32) were forced via resizing.
 
 
