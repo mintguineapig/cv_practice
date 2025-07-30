@@ -1,9 +1,9 @@
 # README
 
 ## Overview
-이 저장소는 CIFAR-10, CIFAR-100, TinyImageNet 데이터셋에서 여러 Vision 모델을 훈련하고 비교한 실험 모음입니다.  
-각 실험은 **weak** 또는 **default** augmentation 설정을 적용했고, **Adam** 옵티마이저(일부 실험은 **SGD**)를 사용했습니다.  
-실험별 `exp-name` 규칙은 다음과 같습니다:
+1. 이 저장소는 CIFAR-10, CIFAR-100, TinyImageNet 데이터셋에서 여러 Vision 모델을 훈련하고 비교한 실험 모음입니다.  
+2. 각 실험은 **weak** 또는 **default** augmentation 설정을 적용했고, **Adam** 옵티마이저(일부 실험은 **SGD**)를 사용했습니다.  
+3. 실험별 `exp-name` 규칙은 다음과 같습니다:
 
 {데이터셋코드}_{모델명}[_입력크기]_augmentation_Optimizer
 
@@ -56,6 +56,7 @@ docker run --gpus all -it -h cv_practice_gpu \
 
 ## **Examples**
 ### ResNet-18 on CIFAR-10 (default augment)
+```bash
 python main.py \
   --dataname CIFAR10 \
   --num-classes 10 \
@@ -67,8 +68,10 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 10_resnet18_default_Adam
+```
 
 ### EfficientNet-B0 on CIFAR-10 (weak augment)
+```bash
 ./run_timm.sh efficientnet_b0 \
   --dataname CIFAR10 \
   --num-classes 10 \
@@ -79,9 +82,10 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 10_efficientnet_b0_weak_Adam
-
+```
 
 ### ViT-Small (32×32) on CIFAR-10
+```bash
 ./run_timm.sh vit_small_patch32_32 \
   --dataname CIFAR10 \
   --num-classes 10 \
@@ -94,8 +98,10 @@ python main.py \
   --epochs 50 \
   --img-size 32 \
   --exp-name 10_ViTsmall32x32_default_Adam
+```
 
 ### ConvNeXt-Base on CIFAR-10 (weak augment)
+```bash
 python main.py \
   --model-name convnext_base \
   --dataname CIFAR10 \
@@ -107,8 +113,10 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 10_ConvNeXt_weak_Adam
+```
 
 ### naflexvit_base on CIFAR-10 (weak augment)
+```bash
 python main.py \
   --model-name naflexvit_base_patch16_gap.e300_s576_in1k \
   --dataname CIFAR10 \
@@ -120,8 +128,10 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 10_naflexvit_weak_Adam
+```
 
 ### naflexvit_base on CIFAR-10 (default augment)
+```bash
 python main.py \
   --model-name naflexvit_base_patch16_gap.e300_s576_in1k \
   --dataname CIFAR10 \
@@ -133,8 +143,10 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 10_naflexvit_default_Adam
+```
 
 ### ResNet-18 on CIFAR-100 (weak augment)
+```bash
 python main.py \
   --dataname CIFAR100 \
   --num-classes 100 \
@@ -146,8 +158,10 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 100_resnet_weak_Adam
+```
 
 ### ResNet-18 on TinyImageNet (default augment)
+```bash
 python main.py \
   --dataname TinyImagenet \
   --num-classes 200 \
@@ -159,6 +173,9 @@ python main.py \
   --use_scheduler \
   --epochs 50 \
   --exp-name 200_resnet18
+```
+
+---
 
 
 | Exp Name                          | Dataset      | Model           | Input Size | Augment | Batch | Optimizer | Scheduler | Epochs |
@@ -175,8 +192,8 @@ python main.py \
 | `10_ConvNeXt_weak_Adam`           | CIFAR-10     | ConvNeXt-Base   | 32×32\*    | weak    | 128   | Adam      | Yes       | 50     |
 | `10_naflexvit_weak_Adam`          | CIFAR-10     | naflexvit\_base | 224×224    | weak    | 64    | Adam      | Yes       | 50     |
 | `10_naflexvit_default_Adam`       | CIFAR-10     | naflexvit\_base | 224×224    | default | 64    | Adam      | Yes       | 50     |
-| `100_resnet_weak_Adam`            | CIFAR-100    | ResNet-18       | 32×32      | weak    | 128   | Adam      | Yes       | 50     |
-| `200_resnet18`                    | TinyImageNet | ResNet-18       | 224×224    | default | 128   | Adam      | Yes       | 50     |
+| `100_resnet18_weak_Adam`            | CIFAR-100    | ResNet-18       | 32×32      | weak    | 128   | Adam      | Yes       | 50     |
+| `200_resnet18_default_Adam`                    | TinyImageNet | ResNet-18       | 224×224    | default | 128   | Adam      | Yes       | 50     |
 
 * CIFAR inputs (32×32) were forced via resizing.
 
