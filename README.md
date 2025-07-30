@@ -27,7 +27,7 @@ pip install \
   pydantic==1.10.2
 
 
-# Docker
+## Docker
 
 docker run --gpus all -it -h cv_practice_gpu \
   -p 1290:1290 \
